@@ -1,0 +1,7 @@
+#!/bin/sh -e
+
+terraform fmt
+terraform init
+terraform validate
+
+# git config core.hooksPath hooks
