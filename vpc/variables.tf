@@ -15,8 +15,8 @@ variable "vpc_name" {
   default = "SOW PACKAGE VPC"
 }
 
-variable "igw_name" {
+variable "route_table_name" {
   type = string
-  description = "Internet gateway resource indentifier"
+  description = "Route table resource indentifier"
   default = "SOW PACKAGE IGW"
 }

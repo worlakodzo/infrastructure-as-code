@@ -16,3 +16,17 @@ resource "aws_internet_gateway" "main" {
         "Name" = var.igw_name
     })
 }
+
+resource "aws_route_table" "main" {
+    vpc_id = aws_vpc.main.id
+    tags = merge(local.tags, {
+        "Name" = var.route_table_name
+    })
+}
+
+resource "aws_route_table" "main" {
+    vpc_id = aws_vpc.main.id
+    tags = merge(local.tags, {
+        "Name" = var.route_table_name
+    })
+}
