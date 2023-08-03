@@ -12,5 +12,11 @@ variable "vpc_cidr_block" {
 variable "vpc_name" {
   type = string
   description = "VPC resource indentifier"
-  default = "Sow-Package-VPC"
+  default = "SOW PACKAGE VPC"
+}
+
+variable "igw_name" {
+  type = string
+  description = "Internet gateway resource indentifier"
+  default = "SOW PACKAGE IGW"
 }
