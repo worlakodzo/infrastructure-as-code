@@ -15,5 +15,8 @@ locals {
   # GET ALL PUBLIC SUBNET IDS
   public_subnet_ids = [for key, subnet in aws_subnet.public : subnet.id]
 
+  # GET ALL PRIVATE ROUTE TABLE IDS
+  private_route_table_ids = [for key, route_table in aws_route_table.private: route_table.id]
+
 }
 
