@@ -1,22 +1,29 @@
 variable "region" {
   description = "AWS region to create resources in"
-  type  = string
-  default = "ap-southeast-2"
+  type        = string
+  default     = "us-east-2"
 }
 
 variable "vpc_cidr_block" {
-  type = string
+  type        = string
   description = "CIDR block for VPC"
 }
 
 variable "vpc_name" {
-  type = string
+  type        = string
   description = "VPC resource indentifier"
-  default = "SOW PACKAGE VPC"
+  default     = "SOW PACKAGE VPC"
 }
 
 variable "route_table_name" {
-  type = string
+  type        = string
   description = "Route table resource indentifier"
-  default = "SOW PACKAGE IGW"
+  default     = "SOW PACKAGE IGW"
+}
+
+variable "subnet_name" {
+  type = string
+  description = "Subnet resource indentifier"
+  default = "SOW PACKAGE SUBNET"
+  
 }

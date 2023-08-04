@@ -3,8 +3,10 @@ provider "aws" {
 
   default_tags {
     tags = {
-      created_by = "terraform"
-      workspace = terraform.workspace
+      Project     = "SOW PACKAGE"
+      Manager     = "Develeap"
+      created_by = "Develeap Sow Package Team"
+      workspace  = terraform.workspace
     }
   }
 }
