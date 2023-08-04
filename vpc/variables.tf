@@ -45,3 +45,21 @@ variable "aws_availability_zone_count" {
   description = "Number of availability zone to setup"
   default     = 1
 }
+
+variable "elastic_ip_name" {
+  type = string
+  description = "Elastic IP address resource identifier"
+  default     = "SOW PACKAGE EIP"
+}
+
+variable "single_nat_gateway" {
+  type = bool
+  description = "When set to True. will provision one nat gateway for one availability zone else provision it for all zone"
+  default = false
+}
+
+variable "provision_nat_gateway" {
+  type = bool
+  description = "When set to True. will provision nat gateways"
+  default = false
+}

@@ -9,7 +9,6 @@ resource "aws_vpc" "main" {
   })
 }
 
-
 resource "aws_internet_gateway" "main" {
   vpc_id = aws_vpc.main.id
 
@@ -34,17 +33,13 @@ resource "aws_route_table" "private" {
   })
 }
 
-
 resource "aws_route" "public" {
   route_table_id         = aws_route_table.public.id
   destination_cidr_block = "0.0.0.0/0"
   gateway_id             = aws_internet_gateway.main.id
-
-
   timeouts {
     create = "5m"
   }
-
   tags = merge(local.tags, {
     "Name" = var.route_table_name
   })
@@ -56,7 +51,6 @@ resource "aws_subnet" "public" {
   vpc_id                  = aws_vpc.main.id
   map_public_ip_on_launch = true
   availability_zone       = element(local.azones, index(var.public_subnets, each.key))
-
   tags = merge(local.tags, {
     "Name" = format("%s-public-%s", var.subnet_name, index(var.public_subnets, each.key))
   })
@@ -67,17 +61,24 @@ resource "aws_subnet" "private" {
   cidr_block        = each.key
   vpc_id            = aws_vpc.main.id
   availability_zone = element(local.azones, index(var.private_subnets, each.key))
-
   tags = merge(local.tags, {
     "Name" = format("%s-private-%s", var.subnet_name, index(var.private_subnets, each.key))
   })
 }
 
-
 resource "aws_route_table_association" "public" {
   for_each       = aws_subnet.public
   subnet_id      = each.value.id
   route_table_id = aws_route_table.main.id
+}
 
 
+### SETTING UP ELASTIC IP ADRRESS
+resource "aws_eip" "main" {
+    for_each = toset(local.azones)
+    vpc = true
+
+    tags = merge(local.tags, {
+        "Name" = format("%s-%s", var.elastic_ip_name, )
+    })
 }
