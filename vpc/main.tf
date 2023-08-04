@@ -9,11 +9,12 @@ resource "aws_vpc" "main" {
   })
 }
 
+### SETTING UP SUBNET AND ROUTE TABLE 
 resource "aws_internet_gateway" "main" {
   vpc_id = aws_vpc.main.id
 
   tags = merge(local.tags, {
-    "Name" = var.igw_name
+    "Name" = var.internet_gateway_name
   })
 }
 
@@ -25,14 +26,6 @@ resource "aws_route_table" "public" {
   })
 }
 
-resource "aws_route_table" "private" {
-  vpc_id = aws_vpc.main.id
-
-  tags = merge(local.tags, {
-    "Name" = format("private-%s", var.route_table_name)
-  })
-}
-
 resource "aws_route" "public" {
   route_table_id         = aws_route_table.public.id
   destination_cidr_block = "0.0.0.0/0"
@@ -40,9 +33,6 @@ resource "aws_route" "public" {
   timeouts {
     create = "5m"
   }
-  tags = merge(local.tags, {
-    "Name" = var.route_table_name
-  })
 }
 
 resource "aws_subnet" "public" {
@@ -56,6 +46,32 @@ resource "aws_subnet" "public" {
   })
 }
 
+resource "aws_route_table_association" "public" {
+  for_each       = aws_subnet.public
+  subnet_id      = each.value.id
+  route_table_id = aws_route_table.public.id
+}
+
+resource "aws_route_table" "private" {
+  for_each = local.azones
+  vpc_id = aws_vpc.main.id
+
+  tags = merge(local.tags, {
+    "Name" = format("%s-private-%s", var.route_table_name, each.key)
+  })
+}
+
+resource "aws_route" "private" {
+  for_each = local.azones
+  route_table_id         = aws_route_table.private[each.key].id
+  nat_gateway_id = aws_nat_gateway.main[each.key].id
+  destination_cidr_block = "0.0.0.0/0"
+  timeouts {
+    create = "5m"
+  }
+}
+
+
 resource "aws_subnet" "private" {
   for_each          = toset(var.private_subnets)
   cidr_block        = each.key
@@ -66,10 +82,10 @@ resource "aws_subnet" "private" {
   })
 }
 
-resource "aws_route_table_association" "public" {
-  for_each       = aws_subnet.public
+resource "aws_route_table_association" "private" {
+  for_each       = aws_subnet.private
   subnet_id      = each.value.id
-  route_table_id = aws_route_table.main.id
+  route_table_id = aws_route_table.private.id
 }
 
 
@@ -89,6 +105,7 @@ resource "aws_nat_gateway" "main" {
   for_each      = aws_eip.main
   allocation_id = each.value.id
   subnet_id     = element(local.public_subnet_ids, index(aws_eip.main, each.key))
+
 
   tags = merge(local.tags, {
     "Name" = format("%s-%s", var.nat_gateway_name, each.key)

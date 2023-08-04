@@ -15,10 +15,16 @@ variable "vpc_name" {
   default     = "SOW PACKAGE VPC"
 }
 
-variable "route_table_name" {
+variable "internet_gateway_name" {
   type        = string
   description = "Route table resource indentifier"
   default     = "SOW PACKAGE IGW"
+}
+
+variable "route_table_name" {
+  type        = string
+  description = "Route table resource indentifier"
+  default     = "SOW PACKAGE RT"
 }
 
 variable "subnet_name" {
