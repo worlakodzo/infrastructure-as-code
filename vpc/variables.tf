@@ -29,19 +29,19 @@ variable "subnet_name" {
 }
 
 variable "public_subnets" {
-  type = list
+  type        = list(any)
   description = "List of cidr block assigned to public subnets"
-  
+
 }
 
 variable "private_subnets" {
-  type = list
+  type        = list(any)
   description = "List of cidr block assigned to private subnets"
-  
+
 }
 
 variable "aws_availability_zone_count" {
-  type = number
+  type        = number
   description = "Number of availability zone to setup"
-  default = 1 
+  default     = 1
 }

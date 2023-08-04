@@ -51,11 +51,11 @@ resource "aws_route" "public" {
 }
 
 resource "aws_subnet" "public" {
-  for_each = toset(var.public_subnets)
-  cidr_block = each.key
+  for_each                = toset(var.public_subnets)
+  cidr_block              = each.key
   vpc_id                  = aws_vpc.main.id
   map_public_ip_on_launch = true
-  availability_zone = element(local.azones, index(var.public_subnets, each.key))
+  availability_zone       = element(local.azones, index(var.public_subnets, each.key))
 
   tags = merge(local.tags, {
     "Name" = format("%s-public-%s", var.subnet_name, index(var.public_subnets, each.key))
@@ -63,9 +63,9 @@ resource "aws_subnet" "public" {
 }
 
 resource "aws_subnet" "private" {
-  for_each = toset(var.private_subnets)
-  cidr_block = each.key
-  vpc_id                  = aws_vpc.main.id
+  for_each          = toset(var.private_subnets)
+  cidr_block        = each.key
+  vpc_id            = aws_vpc.main.id
   availability_zone = element(local.azones, index(var.private_subnets, each.key))
 
   tags = merge(local.tags, {
