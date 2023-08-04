@@ -54,7 +54,7 @@ resource "aws_route_table_association" "public" {
 
 resource "aws_route_table" "private" {
   for_each = local.azones
-  vpc_id = aws_vpc.main.id
+  vpc_id   = aws_vpc.main.id
 
   tags = merge(local.tags, {
     "Name" = format("%s-private-%s", var.route_table_name, each.key)
@@ -62,9 +62,9 @@ resource "aws_route_table" "private" {
 }
 
 resource "aws_route" "private" {
-  for_each = local.azones
+  for_each               = local.azones
   route_table_id         = aws_route_table.private[each.key].id
-  nat_gateway_id = aws_nat_gateway.main[each.key].id
+  nat_gateway_id         = aws_nat_gateway.main[each.key].id
   destination_cidr_block = "0.0.0.0/0"
   timeouts {
     create = "5m"
