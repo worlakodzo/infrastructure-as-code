@@ -65,7 +65,7 @@ variable "provision_nat_gateway" {
 }
 
 variable "nat_gateway_name" {
-  type = string
+  type        = string
   description = "Nat gateway resource identifier"
-  default = "SOW PACKAGE NAT GW"
+  default     = "SOW PACKAGE NAT GW"
 }

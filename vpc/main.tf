@@ -86,14 +86,14 @@ resource "aws_eip" "main" {
 
 ## SETTING UP NAT GATEWAY
 resource "aws_nat_gateway" "main" {
-    for_each = aws_eip.main
-    allocation_id = each.value.id
-    subnet_id = element(local.public_subnet_ids, index(aws_eip.main, each.key))
+  for_each      = aws_eip.main
+  allocation_id = each.value.id
+  subnet_id     = element(local.public_subnet_ids, index(aws_eip.main, each.key))
 
-    tags = merge(local.tags, {
-        "Name" = format("%s-%s", var.nat_gateway_name, each.key)
-    })
+  tags = merge(local.tags, {
+    "Name" = format("%s-%s", var.nat_gateway_name, each.key)
+  })
 
-    depends_on = [ aws_internet_gateway.main ]
-  
+  depends_on = [aws_internet_gateway.main]
+
 }
