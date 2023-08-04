@@ -75,10 +75,10 @@ resource "aws_route_table_association" "public" {
 
 ### SETTING UP ELASTIC IP ADRRESS
 resource "aws_eip" "main" {
-    for_each = toset(local.azones)
-    vpc = true
+  for_each = toset(local.azones)
+  vpc      = true
 
-    tags = merge(local.tags, {
-        "Name" = format("%s-%s", var.elastic_ip_name, )
-    })
+  tags = merge(local.tags, {
+    "Name" = format("%s-%s", var.elastic_ip_name, )
+  })
 }
