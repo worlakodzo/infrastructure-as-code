@@ -75,10 +75,25 @@ resource "aws_route_table_association" "public" {
 
 ### SETTING UP ELASTIC IP ADRRESS
 resource "aws_eip" "main" {
-  for_each = toset(local.azones)
+  for_each = toset(local.net_gw_azones)
   vpc      = true
 
   tags = merge(local.tags, {
-    "Name" = format("%s-%s", var.elastic_ip_name, )
+    "Name" = format("%s-%s", var.elastic_ip_name, each.key)
   })
+}
+
+
+## SETTING UP NAT GATEWAY
+resource "aws_nat_gateway" "main" {
+    for_each = aws_eip.main
+    allocation_id = each.value.id
+    subnet_id = element(local.public_subnet_ids, index(aws_eip.main, each.key))
+
+    tags = merge(local.tags, {
+        "Name" = format("%s-%s", var.nat_gateway_name, each.key)
+    })
+
+    depends_on = [ aws_internet_gateway.main ]
+  
 }

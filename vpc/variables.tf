@@ -63,3 +63,9 @@ variable "provision_nat_gateway" {
   description = "When set to True. will provision nat gateways"
   default     = false
 }
+
+variable "nat_gateway_name" {
+  type = string
+  description = "Nat gateway resource identifier"
+  default = "SOW PACKAGE NAT GW"
+}
