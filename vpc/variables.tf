@@ -22,8 +22,26 @@ variable "route_table_name" {
 }
 
 variable "subnet_name" {
-  type = string
+  type        = string
   description = "Subnet resource indentifier"
-  default = "SOW PACKAGE SUBNET"
+  default     = "SOW PACKAGE SUBNET"
+
+}
+
+variable "public_subnets" {
+  type = list
+  description = "List of cidr block assigned to public subnets"
   
+}
+
+variable "private_subnets" {
+  type = list
+  description = "List of cidr block assigned to private subnets"
+  
+}
+
+variable "aws_availability_zone_count" {
+  type = number
+  description = "Number of availability zone to setup"
+  default = 1 
 }
